@@ -1,0 +1,3 @@
+Score Obtained: 97
+-3% as exceptions are not handled in readTags2Skip method
+
