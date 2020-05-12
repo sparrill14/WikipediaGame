@@ -15,6 +15,7 @@ public class Main{
         String webpage = "Wikipedia";
         //System.out.println(webpage);
 
+        //File writers
         FileWriter fileWriterArticleList = new FileWriter("src/ArticleList.txt");
         FileWriter fileWriterEdges = new FileWriter("src/Edges.txt");
         PrintWriter printWriterArticleList = new PrintWriter(fileWriterArticleList);
@@ -23,18 +24,19 @@ public class Main{
 
 
         /**
-         * Pattern Requirements:
-         * has to start with <a href="/wiki/
-         * must be /wiki/article_name
-         * cannot be image
-         * ignores sidebar, bottom of page, and top of page links
-         *
-         *
+         * Pattern Description:
+         * has to be of format <a href="/wiki/ARTICLE_NAME"
+         * group 1 matches the name of any article with a quotation mark marking the end of the article name
+         * pattern accepts all characters except "
          */
 
+        //Regex
         Pattern pattern = Pattern.compile("<a href=\"/wiki/([^\"]+)");
         Matcher matcher;
+
+        //Queue performs BFS on articles
         Queue<String> websitesToVisit = new LinkedList<>();
+        //Hashmap stores all visited articles as <Article Name Hash Code, Article Name> Pairs
         HashMap<Integer, String> articleSet = new HashMap<>();
 
         /*
@@ -54,17 +56,21 @@ public class Main{
         articleSet.put(webpage.hashCode(), webpage);
 
         while(!websitesToVisit.isEmpty()) {
-            urlName = websitesToVisit.poll();
-            url = "https://en.wikipedia.org/wiki/" + urlName;
-            webpage = ReadWebPage.readWebPage(url);
-            //webpage = webpage.replaceAll("(?=<!--)([\\\\s\\\\S]*?)-->", "");
+            urlName = websitesToVisit.poll(); //Pops next element of queue
+            url = "https://en.wikipedia.org/wiki/" + urlName; //Append protocol
+            webpage = ReadWebPage.readWebPage(url); //Returns HTML as String
             matcher = pattern.matcher(webpage);
             //System.out.println(webpage);
             while (matcher.find()) {
                 //System.out.println(matcher.group(1));
+                /**
+                 * Article names containing colons are thrown out because
+                 * they link to articles containing images, files, and other
+                 * undesirable content
+                 */
                 if(!matcher.group(1).contains(":")){
                     edgeCount++;
-                    if(!articleSet.containsKey(matcher.group(1).hashCode())) {
+                    if(!articleSet.containsKey(matcher.group(1).hashCode())) { // If not already visited add to Queue and HashMap
                         articleSet.put(matcher.group(1).hashCode(), matcher.group(1));
                         websitesToVisit.add(matcher.group(1));
                     }
@@ -80,6 +86,7 @@ public class Main{
         }
         articleCount = articleSet.size();
 
+        //Prints contents of hashmap
         articleSet.forEach((k,v) -> printWriterEdges.format("%d %s%n", k, v));
 
         System.out.println("Articles/Vertices: " + articleCount + " Edges: " + edgeCount);
