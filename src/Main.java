@@ -19,8 +19,7 @@ public class Main{
         FileWriter fileWriterEdges = new FileWriter("src/Edges.txt");
         PrintWriter printWriterArticleList = new PrintWriter(fileWriterArticleList);
         PrintWriter printWriterEdges = new PrintWriter(fileWriterEdges);
-        printWriterEdges.print(5);
-        printWriterArticleList.printf("%d %d%n", 234548734, 234587345);
+
 
 
         /**
@@ -32,11 +31,22 @@ public class Main{
          *
          *
          */
-        /*
+
         Pattern pattern = Pattern.compile("<a href=\"/wiki/([^\"]+)");
         Matcher matcher;
         Queue<String> websitesToVisit = new LinkedList<>();
         HashMap<Integer, String> articleSet = new HashMap<>();
+
+        /*
+        articleSet.put(1, "2");
+        articleSet.put(3, "4");
+        articleSet.put(5, "6");
+        articleSet.put(7, "8");
+        articleSet.put(9, "10");
+
+        articleSet.forEach((k,v) -> printWriterEdges.format("%d %s%n", k, v));
+         */
+
         int edgeCount = 0;
         int articleCount = 0;
         //Inserts first page into queue. Does the first page matter?
@@ -60,14 +70,21 @@ public class Main{
                     }
                     //System.out.println("Connection Between: " + urlName.hashCode() + " and " + matcher.group(1).hashCode());
                     //System.out.println("Connection Between: " + urlName + " and " + matcher.group(1));
-                    System.out.format("%d %d%n", urlName.hashCode(), matcher.group(1).hashCode());
+                    //System.out.format("%d %d%n", urlName.hashCode(), matcher.group(1).hashCode());
+                    printWriterArticleList.format("%d %d%n", urlName.hashCode(), matcher.group(1).hashCode());
                     //System.out.println(edgeCount);
                 }
             }
+            if(articleSet.size() % 100000 == 0)
+                System.out.println("Hunnet Racks");
         }
         articleCount = articleSet.size();
+
+        articleSet.forEach((k,v) -> printWriterEdges.format("%d %s%n", k, v));
+
         System.out.println("Articles/Vertices: " + articleCount + " Edges: " + edgeCount);
 
-         */
+        printWriterArticleList.close();
+        printWriterEdges.close();
     }
 }
