@@ -27,6 +27,6 @@ public class ReadWebPage {
             System.out.println(e);
             System.exit(3);
         }
-        return sb.toString().toLowerCase();
+        return sb.toString();
     }
 }
