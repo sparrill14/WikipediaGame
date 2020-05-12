@@ -1,10 +1,8 @@
 // Imports
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.*;
 import java.util.Queue;
 import java.util.*;
-import java.io.FileReader;
 
 public class Main{
 
@@ -17,6 +15,13 @@ public class Main{
         String webpage = "Wikipedia";
         //System.out.println(webpage);
 
+        FileWriter fileWriterArticleList = new FileWriter("src/ArticleList.txt");
+        FileWriter fileWriterEdges = new FileWriter("src/Edges.txt");
+        PrintWriter printWriterArticleList = new PrintWriter(fileWriterArticleList);
+        PrintWriter printWriterEdges = new PrintWriter(fileWriterEdges);
+        printWriterEdges.print(5);
+        printWriterArticleList.printf("%d %d%n", 234548734, 234587345);
+
 
         /**
          * Pattern Requirements:
@@ -27,11 +32,13 @@ public class Main{
          *
          *
          */
+        /*
         Pattern pattern = Pattern.compile("<a href=\"/wiki/([^\"]+)");
         Matcher matcher;
         Queue<String> websitesToVisit = new LinkedList<>();
         HashMap<Integer, String> articleSet = new HashMap<>();
         int edgeCount = 0;
+        int articleCount = 0;
         //Inserts first page into queue. Does the first page matter?
         websitesToVisit.add(webpage);
         articleSet.put(webpage.hashCode(), webpage);
@@ -45,16 +52,22 @@ public class Main{
             //System.out.println(webpage);
             while (matcher.find()) {
                 //System.out.println(matcher.group(1));
-                if(!matcher.group(1).contains(":") && !articleSet.containsKey(matcher.group(1).hashCode())){
+                if(!matcher.group(1).contains(":")){
                     edgeCount++;
-                    articleSet.put(matcher.group(1).hashCode(), matcher.group(1));
-                    websitesToVisit.add(matcher.group(1));
+                    if(!articleSet.containsKey(matcher.group(1).hashCode())) {
+                        articleSet.put(matcher.group(1).hashCode(), matcher.group(1));
+                        websitesToVisit.add(matcher.group(1));
+                    }
                     //System.out.println("Connection Between: " + urlName.hashCode() + " and " + matcher.group(1).hashCode());
-                    System.out.println("Connection Between: " + urlName + " and " + matcher.group(1));
+                    //System.out.println("Connection Between: " + urlName + " and " + matcher.group(1));
+                    System.out.format("%d %d%n", urlName.hashCode(), matcher.group(1).hashCode());
                     //System.out.println(edgeCount);
                 }
             }
         }
-        int articleCount = articleSet.size();
+        articleCount = articleSet.size();
+        System.out.println("Articles/Vertices: " + articleCount + " Edges: " + edgeCount);
+
+         */
     }
 }
